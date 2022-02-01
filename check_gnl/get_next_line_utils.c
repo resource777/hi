@@ -6,7 +6,7 @@
 /*   By: jaewonki <jaewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 16:31:01 by jaewonki          #+#    #+#             */
-/*   Updated: 2022/01/31 16:31:01 by jaewonki         ###   ########.fr       */
+/*   Updated: 2022/02/01 19:12:33 by jaewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ size_t	ft_strlen(const char *s)
 
 	len = 0;
 	while (*s)
-    {
+	{
 		len++;
 		s++;
 	}
