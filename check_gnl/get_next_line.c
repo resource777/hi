@@ -6,16 +6,16 @@
 /*   By: jaewonki <jaewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 15:20:20 by jaewonki          #+#    #+#             */
-/*   Updated: 2022/01/31 15:20:20 by jaewonki         ###   ########.fr       */
+/*   Updated: 2022/02/01 20:06:44 by jaewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*free_init(char *p)
+char	*free2init(char *s)
 {
-	free(p);
-	p = 0;
+	free(s);
+	s = 0;
 	return (0);
 }
 
@@ -36,7 +36,7 @@ char	*get_line(char *sentence)
 	while (sentence[i] != '\n' && sentence[i])
 	{
 		line[i] = sentence[i];
-		++i;
+		i++;
 	}
 	if (sentence[i] == '\n')
 	{
@@ -51,6 +51,7 @@ char	*read_line(int fd, char *sentence)
 {
 	char	*buf;
 	ssize_t	read_bite;
+	char	*tmp;
 
 	buf = malloc(BUFFER_SIZE + 1);
 	if (!buf)
@@ -59,12 +60,14 @@ char	*read_line(int fd, char *sentence)
 	while (read_bite > 0)
 	{
 		buf[read_bite] = '\0';
-		sentence = ft_strjoin(sentence, buf);
+		tmp = sentence;
+		sentence = ft_strjoin(tmp, buf);
+		free2init(tmp);
 		if (ft_strchr(sentence, '\n') || !sentence)
 			break ;
 		read_bite = read(fd, buf, BUFFER_SIZE);
 	}
-	free(buf);
+	free2init(buf);
 	if (read_bite < 0)
 		return (0);
 	return (sentence);
@@ -74,6 +77,7 @@ char	*get_next_line(int fd)
 {
 	static char		*sentence;
 	char			*line;
+	char			*tmp;
 
 	if (fd < 0 || BUFFER_SIZE < 1)
 		return (0);
@@ -81,15 +85,13 @@ char	*get_next_line(int fd)
 	if (!sentence)
 		return (0);
 	if (!*sentence)
-		return (free_init(sentence));
+		return (free2init(sentence));
 	line = get_line(sentence);
 	if (!line)
-	{
-		free(sentence);
-		sentence = NULL;
-		return (0);
-	}
-	sentence = ft_strdup(sentence + ft_strlen(line));
+		return (free2init(line));
+	tmp = sentence;
+	sentence = ft_strdup(tmp + ft_strlen(line));
+	free2init(tmp);
 	if (!sentence)
 		return (0);
 	return (line);
